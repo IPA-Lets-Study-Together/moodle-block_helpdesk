@@ -13,7 +13,7 @@ function block_helpdesk_sendemail(e) {
         on: {
             success: function (o, response) {
               //OK
-              debugger;
+              //debugger;
               var data;
               Y.log(response.responseText);
 

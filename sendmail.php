@@ -2,6 +2,8 @@
 
 define('AJAX_SCRIPT', TRUE);
 require_once('../../config.php');
+require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
+require_once($CFG->dirroot.'/blocks/helpdesk/lib.php');
 
 require_login(null, false, null, false, true);
 
@@ -9,16 +11,13 @@ confirm_sesskey();
 
 global $USER, $DB, $PAGE, $COURSE;
 
-$context = $PAGE->context;
-
 $coursecontext = context_course::instance($COURSE->id);
 
-$courseid = $coursecontext->instanceid;
+$courseid = $coursecontext->id;
 
+//query the database for all the data needed
 
-//we need user object for email_to_user function
-
-$query_user = "SELECT u.*
+$query_user = "SELECT u.email, u.firstname, u.lastname
 				FROM {course} c
 				JOIN {context} ct ON c.id = ct.instanceid
 				JOIN {role_assignments} ra ON ra.contextid = ct.id
@@ -33,43 +32,48 @@ $query_course = "SELECT c.fullname
 			FROM {course} c
 			WHERE c.id = ?";
 
-$course_data = $DB->get_record_sql($query_course, $params);
+$course_name = $DB->get_field_sql($query_course, $params);
 
-//create new object for sending user
-$from_user = new stdClass();
-$from_user->email = $CFG->noreplyaddress;
-$from_user->firstname = '';
-$from_user->lastname = '';
-$from_user->maildisplay = true;
-$from_user->mailformat = 1;
-$from_user->firstnamephonetic = '';
-$from_user->lastnamephonetic = '';
-$from_user->middlename = '';
-$from_user->alternatename = '';
+$query_resource = "SELECT b.name
+					FROM {book} b
+					JOIN {course} c ON c.id = b.id
+					WHERE c.id = ?";
 
-//form the mail
-$subject = get_string('subject', 'helpdesk_block');
-$body_html = 'message';
-$alt_body = 'message';
+$resource_name = $DB->get_field_sql($query_resource, array($courseid), MUST_EXIST);
 
-$cnt_t = 0;
-$cnt_f = 0;
+$mail = new PHPmailer();
+$mail->WordWrap = 50;	// Set word wrap to 50 characters
+$mail->isHTML(true);	// Set email format to HTML
+$mail->SetFrom($CFG->noreplyaddress, 'No-reply');
+$mail->Subject = get_string('subject', 'block_helpdesk');
+$mail->AltBody = get_string('altbody', 'block_helpdesk');
+
+$cnt = 0;
 
 foreach ($user_data as $user) {
-	if (email_to_user($user, $from_user, $subject, $alt_body, $body_html)) {
-		$cnt_t ++;
-    } else {
-        $cnt_f ++;
-    }
+
+	if ($cnt == 0) {
+		$mail->AddAddress($user->email, $user->firstname." ".$user->lastname);
+	} else {
+		$mail->AddCC($user->email, $user->firstname." ".$user->lastname);
+	}
+
+	$cnt++;
+
+	$mail->Body = get_string('hi', 'block_helpdesk').$user->firstname." ".$user->lastname;
+
 }
 
-if ($cnt_f <= $cnt_t)
-	$result = true;
-else
-	$result = false;
+$body = generate_email($course_name, $resource_name, $courseid);
 
-//$OUTPUT->header();
+$mail->Body = $mail->Body.$body;
+
+if(!$mail->Send()) {
+  $result = false;
+  echo($mail->ErrorInfo);
+} else {
+  $result = true;
+}	
 
 header('Content-Type: application/json');
-
 echo json_encode(array('result' => $result));

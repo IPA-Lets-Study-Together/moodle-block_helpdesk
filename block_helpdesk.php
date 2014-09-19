@@ -27,7 +27,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
-require_once($CFG->libdir.'/chromephp/ChromePhp.php');//izbrisati kasnije
+//require_once($CFG->libdir.'/chromephp/ChromePhp.php');//izbrisati kasnije
+
 
 /**
  * helpdesk block class
