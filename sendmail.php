@@ -28,19 +28,6 @@ $query_user = "SELECT u.email, u.firstname, u.lastname
 $params = array('editingteacher', 'teacher', $courseid);
 $user_data = $DB->get_records_sql($query_user, $params);
 
-$query_course = "SELECT c.fullname
-			FROM {course} c
-			WHERE c.id = ?";
-
-$course_name = $DB->get_field_sql($query_course, $params);
-
-$query_resource = "SELECT b.name
-					FROM {book} b
-					JOIN {course} c ON c.id = b.id
-					WHERE c.id = ?";
-
-$resource_name = $DB->get_field_sql($query_resource, array($courseid), MUST_EXIST);
-
 $mail = new PHPmailer();
 $mail->WordWrap = 50;	// Set word wrap to 50 characters
 $mail->isHTML(true);	// Set email format to HTML
@@ -60,11 +47,11 @@ foreach ($user_data as $user) {
 
 	$cnt++;
 
-	$mail->Body = get_string('hi', 'block_helpdesk').$user->firstname." ".$user->lastname;
+	$mail->Body = get_string('hi', 'block_helpdesk') . $user->firstname . " " . $user->lastname . ",";
 
 }
 
-$body = generate_email($course_name, $resource_name, $courseid);
+$body = generate_email($courseid);
 
 $mail->Body = $mail->Body.$body;
 

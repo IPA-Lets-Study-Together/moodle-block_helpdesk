@@ -26,10 +26,23 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function generate_email($course_name, $resource_name, $courseid) {
+function generate_email($courseid) {
 
-	$email_body = get_string('mail_part_1', 'block_helpdesk').'<a href="'.$CFG->wwwroot.'/course/view.php?id='.$courseid.'.">'.
-					get_string('mail_part_2', 'block_helpdesk').$resource_name.get_string('mail_part_3', 'block_helpdesk');
+	global $DB, $CFG;
+
+	$query_data = "SELECT c.fullname, b.name
+			FROM {book} b
+			JOIN {course} c ON c.id = b.id
+			WHERE c.id = ?";
+
+	$data = $DB->get_records_sql($query_data, array($courseid));
+
+	$course_name = $data->fullname;
+	$book_name = $data->name;
+
+	$email_body = get_string('mail_part_1', 'block_helpdesk') . '<a href="' . $CFG->wwwroot .'/course/view.php?id=' .
+					$courseid . '.">' . $course_name . '</a>' . get_string('mail_part_2', 'block_helpdesk') .
+					$book_name . get_string('mail_part_3', 'block_helpdesk');
 
 	return $email_body;
 }

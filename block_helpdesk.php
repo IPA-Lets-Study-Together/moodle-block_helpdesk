@@ -93,20 +93,37 @@ class block_helpdesk extends block_base {
 		$divattrs = array('id' => 'helpdesk', 'class' => 'content');
 
 		$this->content->text .= html_writer::start_tag('div', $divattrs);
+
+		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_txt'));
 		$this->content->text .= get_string('badstructure', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
 		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'book'))) {
 
-			$this->content->text .= html_writer::start_tag('div');
+			$divattr = array('id' => 'helpdesk_link');
+			$this->content->text .= html_writer::start_tag('div', $divattr);
 			$this->content->text .= $OUTPUT->action_link('/blocks/helpdesk/sendmail.php', get_string('composenew', 'block_helpdesk'), new component_action('click', 'block_helpdesk_sendemail'));
 			$this->content->text .= html_writer::end_tag('div');
-			
+
 		} else {
-			$this->content->text .= html_writer::start_tag('div');
+
+			$divattr = array('id' => 'helpdesk_text');
+			$this->content->text .= html_writer::start_tag('div', $divattr);
 			$this->content->text .= get_string('link', 'block_helpdesk');
 			$this->content->text .= html_writer::end_tag('div');
 		}
+
+		//success scenario
+		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_success', 'style' => 'display: none'));
+		$this->content->text .= get_string('success', 'block_helpdesk');
+		$this->content->text .= html_writer::end_tag('div');
+
+		//failure scenario
+		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_failure', 'style' => 'display: none'));
+		$this->content->text .= get_string('failure', 'block_helpdesk');
+		$this->content->text .= html_writer::end_tag('div');
+
+		$this->content->text .= html_writer::end_tag('div');
 
 		return $this->content;
 	}
