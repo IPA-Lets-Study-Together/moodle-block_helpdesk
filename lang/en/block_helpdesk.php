@@ -20,3 +20,6 @@ $string['mail_part_2'] = ' on a course ';
 $string['mail_part_3'] = '. <br>This learning material is hard to interpret for a screen reader or
 						low sighted user finds it difficult to read it.
 						<br>This is an automated email, please do not answer.';
+
+$string['success'] = 'Your message was succesfully sent to teacher/techers on this course.';
+$string['failure'] = 'There was a problem while sending your message. Please try again later.';
