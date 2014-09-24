@@ -27,8 +27,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
-//require_once($CFG->libdir.'/chromephp/ChromePhp.php');//izbrisati kasnije
-
 
 /**
  * helpdesk block class
@@ -84,7 +82,6 @@ class block_helpdesk extends block_base {
 		}
 
 		$context = context_module::instance($COURSE->id);
-		$courseid = array($COURSE->id);
 		
 		require_capability('block/helpdesk:cansend', $context);
 
@@ -100,9 +97,12 @@ class block_helpdesk extends block_base {
 
 		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'book'))) {
 
+			$link_url = new moodle_url('/blocks/helpdesk/sendmail.php', array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 'courseid' => (int)$COURSE->id));
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
-			$this->content->text .= $OUTPUT->action_link('/blocks/helpdesk/sendmail.php', get_string('composenew', 'block_helpdesk'), new component_action('click', 'block_helpdesk_sendemail'));
+			$this->content->text .= $OUTPUT->action_link($link_url, get_string('composenew', 'block_helpdesk'), 
+				new component_action('click', 'block_helpdesk_sendemail'));
+
 			$this->content->text .= html_writer::end_tag('div');
 
 		} else {

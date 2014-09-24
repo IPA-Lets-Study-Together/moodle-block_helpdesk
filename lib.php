@@ -26,23 +26,35 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-function generate_email($courseid) {
+function generate_email($context, $courseid) {
 
 	global $DB, $CFG;
 
-	$query_data = "SELECT c.fullname, b.name
-			FROM {book} b
-			JOIN {course} c ON c.id = b.id
-			WHERE c.id = ?";
+	$course_name = $DB->get_field('course', 'fullname', array('id' => $courseid), MUST_EXIST);
+	$query_book = "SELECT cm.id, 
+					CASE 
+					WHEN mb.name IS NOT NULL 
+					THEN mb.name
+					ELSE NULL 
+					END AS activityname
+					FROM {course_modules} AS cm
+					INNER JOIN {context} AS ctx ON ctx.contextlevel =70
+					AND ctx.instanceid = cm.id
+					INNER JOIN {modules} AS mdl ON cm.module = mdl.id
+					LEFT JOIN {book} AS mb ON mdl.name =  'book'
+					AND cm.instance = mb.id
+					WHERE ctx.id = ?";
 
-	$data = $DB->get_records_sql($query_data, array($courseid));
 
-	$course_name = $data->fullname;
-	$book_name = $data->name;
+	$data =  $DB->get_records_sql($query_book, array($module_context->id));
 
-	$email_body = get_string('mail_part_1', 'block_helpdesk') . '<a href="' . $CFG->wwwroot .'/course/view.php?id=' .
-					$courseid . '.">' . $course_name . '</a>' . get_string('mail_part_2', 'block_helpdesk') .
-					$book_name . get_string('mail_part_3', 'block_helpdesk');
+	$book_id = $data[$courseid]->id;
+	$book_name = $data[$courseid]->activityname;
+
+	$email_body = get_string('mail_part_1', 'block_helpdesk') . '<a href="' . $CFG->wwwroot . '/mod/book/view.php?id=' .
+					$book_id . '.">' . $book_name . '</a>' . get_string('mail_part_2', 'block_helpdesk') .
+					'<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $courseid . '.">' . 
+					$course_name . '</a>' . get_string('mail_part_3', 'block_helpdesk');
 
 	return $email_body;
 }

@@ -5,15 +5,15 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
 require_once($CFG->dirroot.'/blocks/helpdesk/lib.php');
 
+var_dump($_REQUEST);
+$context = required_param('context', PARAM_INT);
+$courseid = required_param('courseid', PARAM_INT);
+
 require_login(null, false, null, false, true);
 
 confirm_sesskey();
 
 global $USER, $DB, $PAGE, $COURSE;
-
-$coursecontext = context_course::instance($COURSE->id);
-
-$courseid = $coursecontext->id;
 
 //query the database for all the data needed
 
@@ -35,6 +35,7 @@ $mail->SetFrom($CFG->noreplyaddress, 'No-reply');
 $mail->Subject = get_string('subject', 'block_helpdesk');
 $mail->AltBody = get_string('altbody', 'block_helpdesk');
 
+//little hack to handle email recipients, we need one entry of AddAddress type
 $cnt = 0;
 
 foreach ($user_data as $user) {
@@ -47,11 +48,11 @@ foreach ($user_data as $user) {
 
 	$cnt++;
 
-	$mail->Body = get_string('hi', 'block_helpdesk') . $user->firstname . " " . $user->lastname . ",";
+	$mail->Body =  get_string('hi', 'block_helpdesk') . $user->firstname . " " . $user->lastname . ",";
 
 }
 
-$body = generate_email($courseid);
+$body = generate_email($context, $courseid);
 
 $mail->Body = $mail->Body.$body;
 

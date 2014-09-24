@@ -1,19 +1,20 @@
-function block_helpdesk_sendemail(e) {
+function block_helpdesk_sendemail(e, args) {
     
+    Y.log('args' + args);
     e.preventDefault();
 
     Y.log('Enetered method');
 
-    var skey = {"sesskey":M.cfg.sesskey};
-    Y.log(skey);
+    var sesskey, courseid, context;
 
     var ioconfig = {
-        method: 'GET',
-        data: skey,
+        method: 'POST',
+        data: {"sesskey": M.cfg.sesskey, "&courseid": encodeURIComponent(args.courseid), 
+                      "&context": encodeURIComponent(args.context)},
         on: {
             success: function (o, response) {
               //OK
-              //debugger;
+              debugger;
               var data;
               Y.log(response.responseText);
 
