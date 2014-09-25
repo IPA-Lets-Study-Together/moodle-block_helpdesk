@@ -26,17 +26,21 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Find out whether we're desponding to an AJAX call by seeing if the HTTP_X_REQUESTED_WITH header
+ * is XMLHttpRequest
+ * @param int $context - context variable extracted from $PAGE global variable
+ * @param int $courseid - course id of initial course from which the user is sending message
+ *
+ * @return string with formed email text
+ */
 function generate_email($context, $courseid) {
 
 	global $DB, $CFG;
 
 	$course_name = $DB->get_field('course', 'fullname', array('id' => $courseid), MUST_EXIST);
-	$query_book = "SELECT cm.id, 
-					CASE 
-					WHEN mb.name IS NOT NULL 
-					THEN mb.name
-					ELSE NULL 
-					END AS activityname
+
+	$query_book = "SELECT cm.id, mb.name
 					FROM {course_modules} AS cm
 					INNER JOIN {context} AS ctx ON ctx.contextlevel =70
 					AND ctx.instanceid = cm.id
@@ -45,14 +49,10 @@ function generate_email($context, $courseid) {
 					AND cm.instance = mb.id
 					WHERE ctx.id = ?";
 
-
-	$data =  $DB->get_records_sql($query_book, array($module_context->id));
-
-	$book_id = $data[$courseid]->id;
-	$book_name = $data[$courseid]->activityname;
+	$data =  $DB->get_record_sql($query_book, array($context), MUST_EXIST);
 
 	$email_body = get_string('mail_part_1', 'block_helpdesk') . '<a href="' . $CFG->wwwroot . '/mod/book/view.php?id=' .
-					$book_id . '.">' . $book_name . '</a>' . get_string('mail_part_2', 'block_helpdesk') .
+					$data->id . '.">' . $data->name . '</a>' . get_string('mail_part_2', 'block_helpdesk') .
 					'<a href="' . $CFG->wwwroot . '/course/view.php?id=' . $courseid . '.">' . 
 					$course_name . '</a>' . get_string('mail_part_3', 'block_helpdesk');
 
