@@ -42,6 +42,7 @@ class block_helpdesk extends block_base {
 
     /**
      * Disable multiple instances of this block
+     *
      * @return bool Returns false
      */
     function instance_allow_multiple() {
@@ -50,6 +51,7 @@ class block_helpdesk extends block_base {
 
     /**
 	 * Set where the block should be allowed to be added
+	 *
 	 * @return array
 	 */
 	public function applicable_formats() {
@@ -58,6 +60,7 @@ class block_helpdesk extends block_base {
 
 	/**
 	 * Set the content of the block
+	 *
 	 * @return string
 	 */
 	function get_content(){
@@ -87,25 +90,29 @@ class block_helpdesk extends block_base {
 
 		$pageurl = $PAGE->url;
 
-		$divattrs = array('id' => 'helpdesk', 'class' => 'content');
+		$divattrs = array('id' => 'helpdesk', 'class' => 'content1');
 
 		$this->content->text .= html_writer::start_tag('div', $divattrs);
 
-		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_txt'));
+		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_txt', 'class' => ''));
 		$this->content->text .= get_string('badstructure', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
 		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'book'))) {
 
-			$params = array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 'courseid' => (int)$COURSE->id);
+			$params = array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 
+				'courseid' => (int)$COURSE->id, 'page' => $PAGE->url);
 
 			$link_url = new moodle_url('/blocks/helpdesk/sendmail.php', $params);
 
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
+
+			$paramsjs = array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 
+				'courseid' => (int)$COURSE->id);
 			
 			$this->content->text .= $OUTPUT->action_link($link_url, get_string('composenew', 'block_helpdesk'), 
-				new component_action('click', 'block_helpdesk_sendemail', $params));
+				new component_action('click', 'block_helpdesk_sendemail', $paramsjs));
 
 			$this->content->text .= html_writer::end_tag('div');
 
@@ -117,13 +124,19 @@ class block_helpdesk extends block_base {
 			$this->content->text .= html_writer::end_tag('div');
 		}
 
+		$this->content->text .= html_writer::end_tag('div');
+		
+		$this->content->text .= html_writer::start_tag('div', array('class' => 'content2'));
+
 		//success scenario
-		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_success', 'style' => 'display: none'));
+		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_success', 
+			'style' => 'display: none'));
 		$this->content->text .= get_string('success', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
 		//failure scenario
-		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_failure', 'style' => 'display: none'));
+		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_failure', 
+			'style' => 'display: none'));
 		$this->content->text .= get_string('failure', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 

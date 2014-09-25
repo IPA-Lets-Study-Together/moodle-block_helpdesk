@@ -1,9 +1,6 @@
 function block_helpdesk_sendemail(e, args) {
     
-    Y.log('args' + args);
     e.preventDefault();
-
-    Y.log('Enetered method');
 
     var sesskey, courseid, context;
 
@@ -13,39 +10,42 @@ function block_helpdesk_sendemail(e, args) {
                       "context": encodeURIComponent(args.context)},
         on: {
             success: function (o, response) {
-              //OK
-              debugger;
+
               var data;
               Y.log(response.responseText);
 
               try {
+
                 data = Y.JSON.parse(response.responseText);
 
-                Y.log("RAW JSON DATA: " + data);
-
               } catch (e) {
-                alert("JSON Parse failed!");
+
                 Y.log("JSON Parse failed!" + e);
                 return;
+
               }
               if (data.result) {
-                alert('Result is OK!');
-                Y.log('Success');
 
                 //remove existing div nodes
-                var nodes = Y.one('#helpdesk');
+                var nodes = Y.one('.content1');
                 nodes.all('div').remove();
-                //create and append new nodes
+                //show hidden nodes
                 var new_node = Y.one('#helpdesk_success');
                 new_node.show();
+
               }
             },
             failure: function (o, response) {
-              alert('Not OK!');
+
               Y.log('Failure' + response.responseText);
-              //create and append new nodes
+              
+              //remove existing div nodes
+              var nodes = Y.one('.content1');
+              nodes.all('div').remove();
+              //show hidden nodes
               var new_node = Y.one('#helpdesk_failure');
                new_node.show();
+
             }
          }
     };
