@@ -8,9 +8,9 @@ function block_helpdesk_sendemail(e, args) {
     var sesskey, courseid, context;
 
     var ioconfig = {
-        method: 'POST',
-        data: {"sesskey": M.cfg.sesskey, "&courseid": encodeURIComponent(args.courseid), 
-                      "&context": encodeURIComponent(args.context)},
+        method: 'GET',
+        data: {"sesskey": M.cfg.sesskey, "courseid": encodeURIComponent(args.courseid), 
+                      "context": encodeURIComponent(args.context)},
         on: {
             success: function (o, response) {
               //OK

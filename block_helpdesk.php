@@ -97,11 +97,15 @@ class block_helpdesk extends block_base {
 
 		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'book'))) {
 
-			$link_url = new moodle_url('/blocks/helpdesk/sendmail.php', array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 'courseid' => (int)$COURSE->id));
+			$params = array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 'courseid' => (int)$COURSE->id);
+
+			$link_url = new moodle_url('/blocks/helpdesk/sendmail.php', $params);
+
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
+			
 			$this->content->text .= $OUTPUT->action_link($link_url, get_string('composenew', 'block_helpdesk'), 
-				new component_action('click', 'block_helpdesk_sendemail'));
+				new component_action('click', 'block_helpdesk_sendemail', $params));
 
 			$this->content->text .= html_writer::end_tag('div');
 

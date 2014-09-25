@@ -5,7 +5,7 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
 require_once($CFG->dirroot.'/blocks/helpdesk/lib.php');
 
-var_dump($_REQUEST);
+//var_dump($_REQUEST);
 $context = required_param('context', PARAM_INT);
 $courseid = required_param('courseid', PARAM_INT);
 
