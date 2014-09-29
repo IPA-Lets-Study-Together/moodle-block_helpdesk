@@ -1,6 +1,6 @@
 <?php
 
-$string['pluginname'] = 'Helpdesk block';
+$string['pluginname'] = 'Report Learning Materials';
 
 $string['helpdesk:addinstance'] = 'Add a new Helpdesk block';
 $string['helpdesk:myaddinstance'] = 'Add a new Helpdesk block on the My Moodle page';
