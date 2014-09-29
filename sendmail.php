@@ -19,13 +19,14 @@ global $USER, $DB, $PAGE, $COURSE;
 
 $query_user = "SELECT u.email, u.firstname, u.lastname
 				FROM {course} c
-				JOIN {context} ct ON c.id = ct.instanceid
-				JOIN {role_assignments} ra ON ra.contextid = ct.id
+				JOIN {context} ctx ON c.id = ctx.instanceid
+				JOIN {role_assignments} ra ON ra.contextid = ctx.id
 				JOIN {user} u ON u.id = ra.userid
 				JOIN {role} r ON r.id = ra.roleid
 				WHERE (r.shortname = ? OR r.shortname = ?) AND c.id = ?";
 
 $params = array('editingteacher', 'teacher', $courseid);
+
 $user_data = $DB->get_records_sql($query_user, $params);
 
 $mail = new PHPmailer();
@@ -63,5 +64,17 @@ if(!$mail->Send()) {
   $result = true;
 }	
 
-header('Content-Type: application/json');
-echo json_encode(array('result' => $result));
+if (request_is_ajax()) {
+    header('Content-Type: application/json');
+	echo json_encode(array('result' => $result));
+
+} else {
+
+    $page = required_param('page', PARAM_TEXT);
+    $pageurl = new moodle_url($page . '?id=' . get_book_id($context));
+    
+    //redirect($pageurl);
+    //echo json_encode(array('result' => $result));
+    header('Location: '.$pageurl);
+    exit;
+}

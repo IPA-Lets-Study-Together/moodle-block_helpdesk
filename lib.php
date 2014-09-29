@@ -58,3 +58,45 @@ function generate_email($context, $courseid) {
 
 	return $email_body;
 }
+
+/**
+ * Find out whether we're desponding to an AJAX call by seeing if the HTTP_X_REQUESTED_WITH header
+ * is XMLHttpRequest
+ *
+ * @return boolean whether we're reponding to an AJAX call or not
+ */
+function request_is_ajax() {
+
+    $reqwith = 'HTTP_X_REQUESTED_WITH';
+    if (isset($_SERVER[$reqwith]) && $_SERVER[$reqwith] == 'XMLHttpRequest') {
+        $xhr = true;
+    } else {
+        $xhr = false;
+    }
+    
+    return $xhr;
+}
+
+/**
+ * Get book id using context provided
+ * @param int $context - context variable extracted from $PAGE global variable
+ *
+ * @return string
+ */
+function get_book_id($context) {
+
+    global $DB;
+
+	$query_book = "SELECT cm.id
+					FROM {course_modules} AS cm
+					INNER JOIN {context} AS ctx ON ctx.contextlevel =70
+					AND ctx.instanceid = cm.id
+					INNER JOIN {modules} AS mdl ON cm.module = mdl.id
+					LEFT JOIN {book} AS mb ON mdl.name =  'book'
+					AND cm.instance = mb.id
+					WHERE ctx.id = ?";
+
+	$bookid =  $DB->get_field_sql($query_book, array($context), MUST_EXIST);
+
+	return $bookid;
+}
