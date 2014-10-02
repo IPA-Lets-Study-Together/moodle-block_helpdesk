@@ -8,6 +8,7 @@ require_once($CFG->dirroot.'/blocks/helpdesk/lib.php');
 //var_dump($_REQUEST);
 $context = required_param('context', PARAM_INT);
 $courseid = required_param('courseid', PARAM_INT);
+$usermsg = optional_param('message', 0, PARAM_TEXT);
 
 require_login(null, false, null, false, true);
 
@@ -53,11 +54,13 @@ foreach ($user_data as $user) {
 
 }
 
-$body = generate_email($context, $courseid);
+$body = generate_email($context, $courseid, $usermsg);
 
-$mail->Body = $mail->Body.$body;
+$mail->Body .= $body;
 
-if(!$mail->Send()) {
+$is_success = $mail->Send();
+
+if(!$is_success) {
   $result = false;
   echo($mail->ErrorInfo);
 } else {
@@ -73,8 +76,6 @@ if (request_is_ajax()) {
     $page = required_param('page', PARAM_TEXT);
     $pageurl = new moodle_url($page . '?id=' . get_book_id($context));
     
-    //redirect($pageurl);
-    //echo json_encode(array('result' => $result));
     header('Location: '.$pageurl);
     exit;
 }

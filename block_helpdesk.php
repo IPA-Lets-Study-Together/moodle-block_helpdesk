@@ -27,6 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
+define('JS_URL', '/blocks/helpdesk/sendemail.js');
 
 /**
  * helpdesk block class
@@ -74,8 +75,7 @@ class block_helpdesk extends block_base {
             return '';      // Never useful unless you are logged in as real users
         }
 
-        $this->page->requires->js('/blocks/helpdesk/sendemail.js');
-
+        //$this->page->requires->js('/blocks/helpdesk/sendemail.js');
 		$this->content = new stdClass;
 		$this->content->text = '';
 		$this->content->footer = '';
@@ -95,25 +95,62 @@ class block_helpdesk extends block_base {
 
 		$this->content->text .= html_writer::start_tag('div', $divattrs);
 
-		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_txt', 'class' => ''));
+		$this->content->text .= html_writer::start_tag('div', array(
+			'id' => 'helpdesk_txt', 
+			'class' => ''
+		));
 		$this->content->text .= get_string('badstructure', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
 		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'book'))) {
 
-			$params = array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 
-				'courseid' => (int)$COURSE->id, 'page' => $PAGE->url);
-
-			$link_url = new moodle_url('/blocks/helpdesk/sendmail.php', $params);
-
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
-
-			$paramsjs = array('sesskey'=>sesskey(), 'context' => (int)$PAGE->context->id, 
-				'courseid' => (int)$COURSE->id);
 			
-			$this->content->text .= $OUTPUT->action_link($link_url, get_string('composenew', 'block_helpdesk'), 
-				new component_action('click', 'block_helpdesk_sendemail', $paramsjs));
+			/* the following code changes previous line */
+			$this->content->text .= html_writer::start_tag('form', array(
+				'method' => 'POST', 
+				'action' => new moodle_url('/blocks/helpdesk/sendmail.php'),
+				'id' => 'helpdesk_form'
+				));
+
+			$this->content->text .= html_writer::empty_tag('input', array(
+				'name' => 'sesskey',
+				'value' => sesskey(),
+				'type' => 'hidden'
+				));
+
+			$this->content->text .= html_writer::empty_tag('input', array(
+				'name' => 'context',
+				'value' => (int)$PAGE->context->id,
+				'type' => 'hidden'
+				));
+
+			$this->content->text .= html_writer::empty_tag('input', array(
+				'name' => 'courseid',
+				'value' => (int)$COURSE->id,
+				'type' => 'hidden'
+				));
+
+			$this->content->text .= html_writer::empty_tag('input', array(
+				'name' => 'page',
+				'value' => $PAGE->url,
+				'type' => 'hidden'
+				));
+
+			$this->content->text .= html_writer::tag('textarea', '', array(
+				'name' => 'message',
+				'placeholder' => get_string('input_txt', 'block_helpdesk')
+				));
+
+			$this->content->text .= html_writer::empty_tag('input', array(
+				'name' => 'submit_button',
+				'id' => 'helpdesk_submit',
+				'value' => get_string('js_submit', 'block_helpdesk'),
+				'type' => 'submit'
+				));
+
+			$this->content->text .= html_writer::end_tag('form');
 
 			$this->content->text .= html_writer::end_tag('div');
 
@@ -127,21 +164,43 @@ class block_helpdesk extends block_base {
 
 		$this->content->text .= html_writer::end_tag('div');
 		
-		$this->content->text .= html_writer::start_tag('div', array('class' => 'content2'));
+		$this->content->text .= html_writer::start_tag('div', array(
+			'class' => 'content2'
+			));
 
 		//success scenario
-		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_success', 
-			'style' => 'display: none'));
+		$this->content->text .= html_writer::start_tag('div', array(
+			'id' => 'helpdesk_success', 
+			'style' => 'display: none'
+			));
+
 		$this->content->text .= get_string('success', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
 		//failure scenario
-		$this->content->text .= html_writer::start_tag('div', array('id' => 'helpdesk_failure', 
-			'style' => 'display: none'));
+		$this->content->text .= html_writer::start_tag('div', array(
+			'id' => 'helpdesk_failure', 
+			'style' => 'display: none'
+			));
+
 		$this->content->text .= get_string('failure', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
 		$this->content->text .= html_writer::end_tag('div');
+
+		//include JS and JS strings
+		$this->page->requires->string_for_js('input_txt', 'block_helpdesk');
+		$this->page->requires->string_for_js('js_submit', 'block_helpdesk');
+
+		$jsmodule = array(
+				'name'  =>  'block_helpdesk',
+				'fullpath'  =>  JS_URL,
+				'requires'  =>  array('base', 'node')
+			);
+
+			// include js script and pass the arguments
+		$this->page->requires->js_init_call('M.block_helpdesk.init', null, false, $jsmodule);
+
 
 		return $this->content;
 	}
