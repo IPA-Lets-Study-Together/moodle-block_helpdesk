@@ -18,8 +18,11 @@ $string['mail_part_1'] = '<br>You are receiving this email because student
 						reported bad structure of learning material ';
 $string['mail_part_2'] = ' on a course ';
 $string['mail_part_3'] = '. <br>This learning material is hard to interpret for a screen reader or
-						low sighted user finds it difficult to read it.
-						<br>This is an automated email, please do not answer.';
+						low sighted user finds it difficult to read it.<br>';
+
+$string['input_txt'] = "Here you can write what's the problem with these learning materials.";
+$string['user_msg'] = 'Message from the user:';
+$string['js_submit'] = 'Send message';
 
 $string['success'] = 'Your message was succesfully sent to teacher/techers on this course.';
 $string['failure'] = 'There was a problem while sending your message. Please try again later.';
