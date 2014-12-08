@@ -89,7 +89,7 @@ class block_helpdesk extends block_base {
 		require_capability('block/helpdesk:cansend', $context);
 
 		//can not send moodle_url object as required param, send path instead
-		$pageurl = '/mod/book/view.php';
+		$pageurl = (string)$PAGE->url;
 
 		$divattrs = array('id' => 'helpdesk', 'class' => 'content1');
 
@@ -102,7 +102,8 @@ class block_helpdesk extends block_base {
 		$this->content->text .= get_string('badstructure', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
-		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'book'))) {
+
+		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'mod/book'))) {
 
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
