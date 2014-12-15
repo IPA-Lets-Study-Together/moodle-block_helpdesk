@@ -20,7 +20,7 @@
  *
  * @package    	block_helpdesk
  * @author 		Ivana Skelic, Hrvoje Golcic
- * @copyright	2014 IPA "Let's Study Together!"" project
+ * @copyright	2014 IPA "Let's Study Together! project
  * @license    	http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

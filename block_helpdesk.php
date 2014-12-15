@@ -38,7 +38,7 @@ class block_helpdesk extends block_base {
 	}
 
     function has_config() {
-        return false;
+        return true;
     }
 
     /**
@@ -103,12 +103,12 @@ class block_helpdesk extends block_base {
 		$this->content->text .= html_writer::end_tag('div');
 
 
-		if (has_capability('block/helpdesk:cansend', $context) && (strpos($pageurl, 'mod/book'))) {
+		if (has_capability('block/helpdesk:cansend', $context) && (stripos($pageurl, 'mod/book/'))) {
 
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
 			
-			/* the following code changes previous line */
+			// the following code changes previous line
 			$this->content->text .= html_writer::start_tag('form', array(
 				'method' => 'POST', 
 				'action' => new moodle_url('/blocks/helpdesk/sendmail.php'),
@@ -155,6 +155,19 @@ class block_helpdesk extends block_base {
 
 			$this->content->text .= html_writer::end_tag('div');
 
+			//include JS and JS strings
+			$this->page->requires->string_for_js('input_txt', 'block_helpdesk');
+			$this->page->requires->string_for_js('js_submit', 'block_helpdesk');
+
+			$jsmodule = array(
+					'name'  =>  'block_helpdesk',
+					'fullpath'  =>  JS_URL,
+					'requires'  =>  array('base', 'node')
+				);
+
+				// include js script and pass the arguments
+			$this->page->requires->js_init_call('M.block_helpdesk.init', null, false, $jsmodule);
+
 		} else {
 
 			$divattr = array('id' => 'helpdesk_text');
@@ -169,7 +182,7 @@ class block_helpdesk extends block_base {
 			'class' => 'content2'
 			));
 
-		//success scenario
+		//success
 		$this->content->text .= html_writer::start_tag('div', array(
 			'id' => 'helpdesk_success', 
 			'style' => 'display: none'
@@ -178,7 +191,7 @@ class block_helpdesk extends block_base {
 		$this->content->text .= get_string('success', 'block_helpdesk');
 		$this->content->text .= html_writer::end_tag('div');
 
-		//failure scenario
+		//failure
 		$this->content->text .= html_writer::start_tag('div', array(
 			'id' => 'helpdesk_failure', 
 			'style' => 'display: none'
@@ -190,7 +203,7 @@ class block_helpdesk extends block_base {
 		$this->content->text .= html_writer::end_tag('div');
 
 		//include JS and JS strings
-		$this->page->requires->string_for_js('input_txt', 'block_helpdesk');
+		/*$this->page->requires->string_for_js('input_txt', 'block_helpdesk');
 		$this->page->requires->string_for_js('js_submit', 'block_helpdesk');
 
 		$jsmodule = array(
@@ -200,7 +213,7 @@ class block_helpdesk extends block_base {
 			);
 
 			// include js script and pass the arguments
-		$this->page->requires->js_init_call('M.block_helpdesk.init', null, false, $jsmodule);
+		$this->page->requires->js_init_call('M.block_helpdesk.init', null, false, $jsmodule);*/
 
 
 		return $this->content;
