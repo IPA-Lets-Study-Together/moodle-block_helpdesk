@@ -85,8 +85,6 @@ class block_helpdesk extends block_base {
 		}
 
 		$context = context_module::instance($COURSE->id);
-		
-		require_capability('block/helpdesk:cansend', $context);
 
 		//can not send moodle_url object as required param, send path instead
 		$pageurl = (string)$PAGE->url;
@@ -103,7 +101,7 @@ class block_helpdesk extends block_base {
 		$this->content->text .= html_writer::end_tag('div');
 
 
-		if (has_capability('block/helpdesk:cansend', $context) && (stripos($pageurl, 'mod/book/'))) {
+		if (stripos($pageurl, 'mod/book/')) {
 
 			$divattr = array('id' => 'helpdesk_link');
 			$this->content->text .= html_writer::start_tag('div', $divattr);
@@ -201,20 +199,6 @@ class block_helpdesk extends block_base {
 		$this->content->text .= html_writer::end_tag('div');
 
 		$this->content->text .= html_writer::end_tag('div');
-
-		//include JS and JS strings
-		/*$this->page->requires->string_for_js('input_txt', 'block_helpdesk');
-		$this->page->requires->string_for_js('js_submit', 'block_helpdesk');
-
-		$jsmodule = array(
-				'name'  =>  'block_helpdesk',
-				'fullpath'  =>  JS_URL,
-				'requires'  =>  array('base', 'node')
-			);
-
-			// include js script and pass the arguments
-		$this->page->requires->js_init_call('M.block_helpdesk.init', null, false, $jsmodule);*/
-
 
 		return $this->content;
 	}

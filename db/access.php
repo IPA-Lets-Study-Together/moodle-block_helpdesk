@@ -16,16 +16,16 @@
 /**
  * Capability definitions for the course_menu block
  *
- * @package    	block_helpdesk
+ * @package   block_helpdesk
  * @author 		Ivana Skelic, Hrvoje Golcic
- * @copyright	2014 IPA "Let's Study Together!" project
- * @license    	http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright 2014 IPA "Let's Study Together!" project
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
     // New standard capability 'addinstance'.
-    'block/accessibility:addinstance' => array(
+    'block/helpdesk:addinstance' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_COURSE,
         'archetypes'    => array(
@@ -34,7 +34,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom'  => 'moodle/site:manageblocks'
     ),
-    'block/accessibility:myaddinstance' => array(
+    'block/helpdesk:myaddinstance' => array(
       'riskbitmask'  => RISK_PERSONAL,
       'captype'      => 'write',
       'contextlevel' => CONTEXT_SYSTEM,
