@@ -40,14 +40,14 @@ M.block_helpdesk = {
   onsuccess: function (o, response) {
 
     var Y = M.block_helpdesk.Y;
-    Y.log(response.responseText);
+    //Y.log(response.responseText);
 
     try {
       var data = Y.JSON.parse(response.responseText);
 
     } catch (e) {
 
-      Y.log("JSON Parse failed!" + e);
+      //Y.log("JSON Parse failed!" + e);
       return;
 
     }
