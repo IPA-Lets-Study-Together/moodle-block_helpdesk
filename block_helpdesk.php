@@ -84,7 +84,7 @@ class block_helpdesk extends block_base {
 			return $this->content;
 		}
 
-		$context = context_module::instance($COURSE->id);
+		$context = context_course::instance($this->page->course->id);
 		
 		require_capability('block/helpdesk:cansend', $context);
 
@@ -201,20 +201,6 @@ class block_helpdesk extends block_base {
 		$this->content->text .= html_writer::end_tag('div');
 
 		$this->content->text .= html_writer::end_tag('div');
-
-		//include JS and JS strings
-		/*$this->page->requires->string_for_js('input_txt', 'block_helpdesk');
-		$this->page->requires->string_for_js('js_submit', 'block_helpdesk');
-
-		$jsmodule = array(
-				'name'  =>  'block_helpdesk',
-				'fullpath'  =>  JS_URL,
-				'requires'  =>  array('base', 'node')
-			);
-
-			// include js script and pass the arguments
-		$this->page->requires->js_init_call('M.block_helpdesk.init', null, false, $jsmodule);*/
-
 
 		return $this->content;
 	}
