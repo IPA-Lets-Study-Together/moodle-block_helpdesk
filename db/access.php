@@ -26,13 +26,13 @@ defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
     // New standard capability 'addinstance'.
     'block/helpdesk:addinstance' => array(
-        'captype'       => 'write',
-        'contextlevel'  => CONTEXT_COURSE,
-        'archetypes'    => array(
-            'editingteacher'    => CAP_ALLOW,
-            'manager'           => CAP_ALLOW
-        ),
-        'clonepermissionsfrom'  => 'moodle/site:manageblocks'
+      'captype'       => 'write',
+      'contextlevel'  => CONTEXT_COURSE,
+      'archetypes'    => array(
+          'editingteacher'    => CAP_ALLOW,
+          'manager'           => CAP_ALLOW
+      ),
+      'clonepermissionsfrom'  => 'moodle/site:manageblocks'
     ),
     'block/helpdesk:myaddinstance' => array(
       'riskbitmask'  => RISK_PERSONAL,
@@ -44,4 +44,13 @@ $capabilities = array(
       ),
       'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
+    'block/helpdesk:cansend' => array(
+      'captype'       => 'write',
+      'contextlevel'  => CONTEXT_COURSE,
+      'archetypes'    => array(
+          'user'    => CAP_ALLOW,
+          'student'           => CAP_ALLOW
+      ),
+    ),
+
 );
