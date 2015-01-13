@@ -84,7 +84,10 @@ class block_helpdesk extends block_base {
 			return $this->content;
 		}
 
-		$context = context_module::instance($COURSE->id);
+
+		$context = context_course::instance($this->page->course->id);
+		
+		require_capability('block/helpdesk:cansend', $context);
 
 		//can not send moodle_url object as required param, send path instead
 		$pageurl = (string)$PAGE->url;
