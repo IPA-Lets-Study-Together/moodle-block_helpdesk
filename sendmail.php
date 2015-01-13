@@ -42,17 +42,18 @@ $cnt = 0;
 
 foreach ($user_data as $user) {
 
+	$username = $user->firstname." ".$user->lastname;
 	if ($cnt == 0) {
-		$mail->AddAddress($user->email, $user->firstname." ".$user->lastname);
+		$mail->AddAddress($user->email, $username);
 	} else {
-		$mail->AddCC($user->email, $user->firstname." ".$user->lastname);
+		$mail->AddBCC($user->email, $username);
 	}
 
 	$cnt++;
 
-	$mail->Body =  get_string('hi', 'block_helpdesk') . $user->firstname . " " . $user->lastname . ",";
-
 }
+
+$mail->Body = get_string('hi', 'block_helpdesk') . ",";
 
 $body = generate_email($context, $courseid, $usermsg);
 
