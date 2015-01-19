@@ -27,12 +27,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
-define('JS_URL', '/blocks/helpdesk/sendemail.js');
 
 /**
  * helpdesk block class
  */
 class block_helpdesk extends block_base {
+
+	CONST JS_URL = '/blocks/helpdesk/sendemail.js';
+
 	function init() {
 		$this->title = get_string('pluginname', 'block_helpdesk');
 	}
@@ -162,7 +164,7 @@ class block_helpdesk extends block_base {
 
 			$jsmodule = array(
 					'name'  =>  'block_helpdesk',
-					'fullpath'  =>  JS_URL,
+					'fullpath'  =>  self::JS_URL,
 					'requires'  =>  array('base', 'node')
 				);
 
