@@ -39,6 +39,24 @@ class block_helpdesk extends block_base {
 		$this->title = get_string('pluginname', 'block_helpdesk');
 	}
 
+	/*function user_can_addto($page) {
+        // Don't allow people to add the block if they can't even use it
+        if (!has_capability('moodle/helpdesk:add', $page->context)) {
+            return false;
+        }
+
+        return parent::user_can_addto($page);
+    }
+
+    function user_can_edit() {
+        // Don't allow people to edit the block if they can't even use it
+        if (!has_capability('moodle/helpdesk:add',
+                     context::instance_by_id($this->instance->parentcontextid))) {
+            return false;
+        }
+        return parent::user_can_edit();
+    }*/
+
     function has_config() {
         return true;
     }
