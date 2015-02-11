@@ -7,8 +7,8 @@ $string['helpdesk:myaddinstance'] = 'Add a new Helpdesk block on the My Moodle p
 $string['helpdesk:cansend'] = 'Send a mail';
 
 $string['composenew'] = 'Send new mail';
-$string['badstructure'] = 'Using the link below you can report bad structure and/or formatting of learning materials.';
-$string['link'] = 'The link will appear when you are positioned in a learning material inside a course';
+$string['badstructure'] = 'Using the form below you can report bad structure and/or formatting of learning materials.';
+$string['link'] = 'The form will appear when you are positioned in a learning material inside a course';
 
 $string['subject'] = 'Bad material structure reported on Moodle course';
 $string['altbody'] = 'To view the message, please use an HTML compatible email viewer.';

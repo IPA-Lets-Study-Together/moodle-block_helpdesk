@@ -1,14 +1,14 @@
 <?php
 
-$string['pluginname'] = 'Helpdesk blok';
+$string['pluginname'] = 'Prijava nastavnih materijala';
 
 $string['helpdesk:addinstance'] = 'Dodaj novi Helpdesk blok';
 $string['helpdesk:myaddinstance'] = 'Dodaj novi Helpdesk blok na Moj Moodle stranicu';
 $string['helpdesk:cansend'] = 'Pošalji email';
 
 $string['composenew'] = 'Pošalji novi email';
-$string['badstructure'] = 'Korištenjem linka ispod možete prijaviti lošu strukturu nastavnih materijala na kolegiju';
-$string['link'] = 'Link će se pojaviti kada se unutar kolegija pozicionirate u nastavni materijal tipa Knjiga';
+$string['badstructure'] = 'Korištenjem forme možete prijaviti lošu strukturu nastavnih materijala na kolegiju.';
+$string['link'] = 'Forma će se pojaviti kada se unutar kolegija pozicionirate u nastavni materijal tipa Knjiga.';
 
 $string['subject'] = 'Prijavljena je loša struktura materijala na Moodle kolegiju';
 $string['altbody'] = 'Kako biste pregledali ovu poruku, molimo Vas koristite HTML kompatibilan preglednik.';
