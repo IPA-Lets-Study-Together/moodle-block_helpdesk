@@ -27,12 +27,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Find out whether we're desponding to an AJAX call by seeing if the HTTP_X_REQUESTED_WITH header
- * is XMLHttpRequest
- * @param int $context - context variable extracted from $PAGE global variable
- * @param int $courseid - course id of initial course from which the user is sending message
+ * Generate email body
+ * @param int $context context property from $PAGE global
+ * @param int $courseid id property of course stdClass
+ * @param string $usermsg
  *
- * @return string with formed email text
+ * @return string 
  */
 function generate_email($context, $courseid, $usermsg) {
 
@@ -84,7 +84,7 @@ function generate_email($context, $courseid, $usermsg) {
  * Find out whether we're desponding to an AJAX call by seeing if the HTTP_X_REQUESTED_WITH header
  * is XMLHttpRequest
  *
- * @return boolean whether we're reponding to an AJAX call or not
+ * @return boolean
  */
 function request_is_ajax() {
 
@@ -100,7 +100,7 @@ function request_is_ajax() {
 
 /**
  * Get book id using context provided
- * @param int $context - context variable extracted from $PAGE global variable
+ * @param int $context - context variable from $PAGE global variable
  *
  * @return string
  */
