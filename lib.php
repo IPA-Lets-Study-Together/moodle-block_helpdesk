@@ -16,9 +16,9 @@
 
 
 /**
- * Define the helpdesk block's additional functions
+ * Define the structure_information block's additional functions
  *
- * @package    	block_helpdesk
+ * @package    	block_structure_information
  * @author 		Ivana Skelic, Hrvoje Golcic
  * @copyright	2014 IPA "Let's Study Together! project
  * @license    	http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -34,7 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @return string 
  */
-function generate_email($context, $courseid, $usermsg) {
+function structure_information_generate_email($context, $courseid, $usermsg) {
 
 	global $DB, $CFG;
 
@@ -86,7 +86,7 @@ function generate_email($context, $courseid, $usermsg) {
  *
  * @return boolean
  */
-function request_is_ajax() {
+function block_structure_information_is_ajax() {
 
     $reqwith = 'HTTP_X_REQUESTED_WITH';
     if (isset($_SERVER[$reqwith]) && $_SERVER[$reqwith] == 'XMLHttpRequest') {
@@ -104,7 +104,7 @@ function request_is_ajax() {
  *
  * @return string
  */
-function get_book_id($context) {
+function block_structure_information_get_book_id($context) {
 
     global $DB;
 

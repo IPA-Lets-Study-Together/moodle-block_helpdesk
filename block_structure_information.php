@@ -16,9 +16,9 @@
 
 
 /**
- * Define the helpdesk block's class
+ * Define the structure_information block's class
  *
- * @package    	block_helpdesk
+ * @package    	block_structure_information
  * @author 		Ivana Skelic, Hrvoje Golcic
  * @copyright	2014 IPA "Let's Study Together!"" project
  * @license    	http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,14 +29,14 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/phpmailer/class.phpmailer.php'); //required
 
 /**
- * helpdesk block class
+ * structure_information block class
  */
-class block_helpdesk extends block_base {
+class block_structure_information extends block_base {
 
 	CONST JS_URL = '/blocks/helpdesk/sendemail.js';
 
 	function init() {
-		$this->title = get_string('pluginname', 'block_helpdesk');
+		$this->title = get_string('pluginname', 'block_structure_information');
 	}
 
 	/*function user_can_addto($page) {

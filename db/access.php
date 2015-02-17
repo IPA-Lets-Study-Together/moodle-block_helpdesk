@@ -25,7 +25,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
     // New standard capability 'addinstance'.
-    'block/helpdesk:addinstance' => array(
+    'block/structure_information:addinstance' => array(
       'captype'       => 'write',
       'contextlevel'  => CONTEXT_COURSE,
       'archetypes'    => array(
@@ -34,7 +34,7 @@ $capabilities = array(
       ),
       'clonepermissionsfrom'  => 'moodle/site:manageblocks'
     ),
-    'block/helpdesk:myaddinstance' => array(
+    'block/structure_information:myaddinstance' => array(
       'riskbitmask'  => RISK_PERSONAL,
       'captype'      => 'write',
       'contextlevel' => CONTEXT_SYSTEM,
@@ -44,7 +44,7 @@ $capabilities = array(
       ),
       'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
-    'block/helpdesk:cansend' => array(
+    'block/structure_information:cansend' => array(
       'captype'       => 'write',
       'contextlevel'  => CONTEXT_COURSE,
       'archetypes'    => array(
